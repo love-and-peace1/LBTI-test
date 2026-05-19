@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<title>美力LBTI测试 - 欧莱雅版美力人格测试</title>
+	<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+	</script>
+	<style>
+		:root {
+			--yellow: #FFD740;
+			--yellow-bright: #FFE066;
+			--yellow-deep: #FFC107;
+			--pink: #FF6B9D;
+			--pink-light: #FF8DB5;
+			--pink-pale: #FFF0F5;
+			--white: #FFFFFF;
+			--cream: #FFFAF5;
+			--text-dark: #2D2D2D;
+			--text-mid: #5A5A5A;
+			--text-light: #888888;
+			--shadow-soft: 0 4px 20px rgba(255, 107, 157, 0.12);
+			--shadow-card: 0 8px 32px rgba(255, 107, 157, 0.15);
+			--shadow-btn: 0 6px 24px rgba(255, 215, 64, 0.35);
+			--radius-sm: 12px;
+			--radius-md: 18px;
+			--radius-lg: 24px;
+			--radius-xl: 32px;
+			--font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+			--font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+			--transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+			--transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			-webkit-tap-highlight-color: transparent;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+		html,
+		body {
+			width: 100%;
+			min-height: 100vh;
+			min-height: 100dvh;
+			font-family: var(--font-body);
+			background: linear-gradient(180deg, #FFF8F0 0%, #FFF0F5 25%, #FFF5F7 50%, #FFFAF5 75%, #FFF8F0 100%);
+			background-attachment: fixed;
+			color: var(--text-dark);
+			overflow-x: hidden;
+			-webkit-overflow-scrolling: touch;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			padding: 0;
+		}
+
+		/* 背景装饰 */
+		body::before {
+			content: '';
+			position: fixed;
+			top: -120px;
+			right: -80px;
+			width: 280px;
+			height: 280px;
+			background: radial-gradient(circle, rgba(255, 215, 64, 0.25) 0%, transparent 70%);
+			border-radius: 50%;
+			pointer-events: none;
+			z-index: 0;
+			animation: floatBlob1 8s ease-in-out infinite;
+		}
+		body::after {
+			content: '';
+			position: fixed;
+			bottom: -100px;
+			left: -90px;
+			width: 260px;
+			height: 260px;
+			background: radial-gradient(circle, rgba(255, 107, 157, 0.18) 0%, transparent 70%);
+			border-radius: 50%;
+			pointer-events: none;
+			z-index: 0;
+			animation: floatBlob2 10s ease-in-out infinite;
+		}
+		@keyframes floatBlob1 {
+			0%,
+			100% {
+				transform: translate(0, 0) scale(1);
+			}
+			33% {
+				transform: translate(-20px, 30px) scale(1.08);
+			}
+			66% {
+				transform: translate(15px, -20px) scale(0.94);
+			}
+		}
+		@keyframes floatBlob2 {
+			0%,
+			100% {
+				transform: translate(0, 0) scale(1);
+			}
+			33% {
+				transform: translate(25px, -25px) scale(1.06);
+			}
+			66% {
+				transform: translate(-18px, 20px) scale(0.92);
+			}
+		}
+
+		#app-container {
+			position: relative;
+			z-index: 1;
+			width: 100%;
+			max-width: 460px;
+			min-height: 100vh;
+			min-height: 100dvh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 20px 16px 40px;
+		}
+
+		/* ==================== 页面容器 ==================== */
+		.page {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+		}
+		.page.hidden {
+			display: none;
+		}
+		.page.fade-in {
+			animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		}
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(24px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		@keyframes fadeInScale {
+			from {
+				opacity: 0;
+				transform: scale(0.92);
+			}
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		/* ==================== 介绍页 ==================== */
+		#intro-page {
+			padding-top: 30px;
+			gap: 18px;
+		}
+		.brand-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			background: var(--white);
+			border: 1.5px solid rgba(255, 107, 157, 0.2);
+			border-radius: 50px;
+			padding: 10px 20px;
+			font-size: 13px;
+			font-weight: 600;
+			color: var(--pink);
+			letter-spacing: 0.5px;
+			box-shadow: var(--shadow-soft);
+		}
+		.brand-badge .dot {
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+			background: var(--yellow);
+			animation: pulse-dot 1.6s ease-in-out infinite;
+		}
+		@keyframes pulse-dot {
+			0%,
+			100% {
+				transform: scale(1);
+				opacity: 1;
+			}
+			50% {
+				transform: scale(1.8);
+				opacity: 0.4;
+			}
+		}
+		.intro-hero {
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 14px;
+			margin: 10px 0 6px;
+		}
+		.intro-icon {
+			font-size: 56px;
+			animation: bounceGentle 2s ease-in-out infinite;
+			filter: drop-shadow(0 4px 12px rgba(255, 215, 64, 0.4));
+		}
+		@keyframes bounceGentle {
+			0%,
+			100% {
+				transform: translateY(0);
+			}
+			30% {
+				transform: translateY(-14px);
+			}
+			50% {
+				transform: translateY(0);
+			}
+			70% {
+				transform: translateY(-7px);
+			}
+		}
+		.slogan-main {
+			font-family: var(--font-title);
+			font-size: 26px;
+			font-weight: 700;
+			color: var(--text-dark);
+			line-height: 1.35;
+			letter-spacing: 1px;
+			text-align: center;
+		}
+		.slogan-main .highlight {
+			background: linear-gradient(135deg, var(--pink) 0%, #FF4081 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			font-weight: 800;
+		}
+		.slogan-sub {
+			font-size: 15px;
+			color: var(--text-mid);
+			text-align: center;
+			line-height: 1.6;
+			letter-spacing: 0.3px;
+		}
+		.intro-card {
+			background: var(--white);
+			border-radius: var(--radius-lg);
+			padding: 24px 20px;
+			width: 100%;
+			box-shadow: var(--shadow-card);
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			border: 1px solid rgba(255, 107, 157, 0.08);
+		}
+		.intro-card-item {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			font-size: 14px;
+			color: var(--text-mid);
+			letter-spacing: 0.3px;
+		}
+		.intro-card-item .emoji-bullet {
+			font-size: 22px;
+			flex-shrink: 0;
+		}
+		.btn-start {
+			width: 100%;
+			padding: 16px 28px;
+			font-size: 18px;
+			font-weight: 700;
+			letter-spacing: 1.5px;
+			color: #3D2200;
+			background: linear-gradient(135deg, var(--yellow-bright) 0%, var(--yellow) 40%, var(--yellow-deep) 100%);
+			border: none;
+			border-radius: 50px;
+			cursor: pointer;
+			box-shadow: var(--shadow-btn);
+			transition: all var(--transition-fast);
+			position: relative;
+			overflow: hidden;
+			font-family: var(--font-title);
+			margin-top: 4px;
+		}
+		.btn-start:active {
+			transform: scale(0.96);
+			box-shadow: 0 3px 14px rgba(255, 200, 40, 0.4);
+		}
+		.btn-start::after {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 60%);
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+		.btn-start:active::after {
+			opacity: 1;
+		}
+		.intro-footer {
+			text-align: center;
+			font-size: 12px;
+			color: var(--text-light);
+			letter-spacing: 0.4px;
+			margin-top: 4px;
+		}
+
+		/* ==================== 答题页 ==================== */
+		#quiz-page {
+			gap: 10px;
+			padding-top: 10px;
+		}
+		.quiz-header {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 4px;
+		}
+		.quiz-progress-text {
+			font-size: 13px;
+			font-weight: 600;
+			color: var(--pink);
+			letter-spacing: 0.5px;
+		}
+		.quiz-progress-bar-wrap {
+			width: 100%;
+			height: 6px;
+			background: #F5E8ED;
+			border-radius: 10px;
+			overflow: hidden;
+			margin-bottom: 8px;
+		}
+		.quiz-progress-bar-fill {
+			height: 100%;
+			background: linear-gradient(90deg, var(--yellow) 0%, var(--pink-light) 100%);
+			border-radius: 10px;
+			transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+		.quiz-question-card {
+			width: 100%;
+			background: var(--white);
+			border-radius: var(--radius-lg);
+			padding: 26px 20px 28px;
+			box-shadow: var(--shadow-card);
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			border: 1px solid rgba(255, 107, 157, 0.06);
+			transition: all var(--transition-smooth);
+			animation: fadeInUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		}
+		.quiz-question-number {
+			font-size: 13px;
+			font-weight: 700;
+			color: var(--pink);
+			letter-spacing: 1px;
+			text-transform: uppercase;
+		}
+		.quiz-question-text {
+			font-family: var(--font-title);
+			font-size: 19px;
+			font-weight: 600;
+			color: var(--text-dark);
+			line-height: 1.5;
+			letter-spacing: 0.4px;
+		}
+		.quiz-options {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+		.quiz-option {
+			width: 100%;
+			padding: 15px 18px;
+			font-size: 15px;
+			font-weight: 500;
+			color: var(--text-dark);
+			background: #FFFAFB;
+			border: 2px solid #F5E8ED;
+			border-radius: var(--radius-md);
+			cursor: pointer;
+			transition: all var(--transition-fast);
+			text-align: left;
+			letter-spacing: 0.3px;
+			position: relative;
+			font-family: var(--font-body);
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			-webkit-user-select: none;
+			user-select: none;
+		}
+		.quiz-option .option-letter {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			background: #F5E8ED;
+			font-weight: 700;
+			font-size: 13px;
+			color: var(--pink);
+			flex-shrink: 0;
+			transition: all var(--transition-fast);
+		}
+		.quiz-option:active {
+			transform: scale(0.97);
+			background: #FFF5F8;
+			border-color: var(--pink-light);
+		}
+		.quiz-option.selected {
+			background: #FFF0F5;
+			border-color: var(--pink);
+			box-shadow: 0 4px 16px rgba(255, 107, 157, 0.2);
+			font-weight: 600;
+		}
+		.quiz-option.selected .option-letter {
+			background: var(--pink);
+			color: #fff;
+			box-shadow: 0 3px 10px rgba(255, 107, 157, 0.35);
+		}
+		.quiz-option.fade-out {
+			opacity: 0.35;
+			pointer-events: none;
+			transition: opacity 0.2s;
+		}
+
+		/* ==================== 结果页 ==================== */
+		#result-page {
+			gap: 16px;
+			padding-top: 10px;
+			animation: fadeInScale 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		}
+		.result-heading {
+			text-align: center;
+			font-family: var(--font-title);
+			font-size: 22px;
+			font-weight: 700;
+			color: var(--text-dark);
+			letter-spacing: 0.5px;
+		}
+		.result-heading span {
+			background: linear-gradient(135deg, var(--pink) 0%, #FF4081 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+		/* 人格卡 */
+		.persona-card {
+			width: 100%;
+			max-width: 380px;
+			background: var(--white);
+			border-radius: var(--radius-xl);
+			overflow: hidden;
+			box-shadow: 0 12px 40px rgba(255, 107, 157, 0.18), 0 2px 8px rgba(0, 0, 0, 0.04);
+			position: relative;
+			border: 1px solid rgba(255, 107, 157, 0.1);
+		}
+		.persona-card-top {
+			background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 30%, #FFE0B2 60%, #FFF3E0 100%);
+			padding: 28px 22px 22px;
+			text-align: center;
+			position: relative;
+			overflow: hidden;
+		}
+		.persona-card-top::before {
+			content: '';
+			position: absolute;
+			top: -40px;
+			right: -30px;
+			width: 120px;
+			height: 120px;
+			background: radial-gradient(circle, rgba(255, 215, 64, 0.5) 0%, transparent 70%);
+			border-radius: 50%;
+			pointer-events: none;
+		}
+		.persona-card-top::after {
+			content: '';
+			position: absolute;
+			bottom: -20px;
+			left: -20px;
+			width: 80px;
+			height: 80px;
+			background: radial-gradient(circle, rgba(255, 107, 157, 0.3) 0%, transparent 70%);
+			border-radius: 50%;
+			pointer-events: none;
+		}
+		.persona-emoji {
+			font-size: 52px;
+			position: relative;
+			z-index: 1;
+			filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+		}
+		.persona-name {
+			font-family: var(--font-title);
+			font-size: 24px;
+			font-weight: 800;
+			color: #3D2200;
+			letter-spacing: 1px;
+			position: relative;
+			z-index: 1;
+			margin-top: 6px;
+		}
+		.persona-card-body {
+			padding: 20px 22px 24px;
+			display: flex;
+			flex-direction: column;
+			gap: 13px;
+		}
+		.persona-desc {
+			font-size: 15px;
+			color: var(--text-mid);
+			line-height: 1.6;
+			letter-spacing: 0.3px;
+			text-align: center;
+			font-weight: 500;
+		}
+		.persona-detail-row {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			font-size: 14px;
+			color: var(--text-dark);
+			letter-spacing: 0.3px;
+			background: #FFFAFB;
+			border-radius: var(--radius-sm);
+			padding: 12px 14px;
+		}
+		.persona-detail-row .detail-icon {
+			font-size: 20px;
+			flex-shrink: 0;
+		}
+		.persona-detail-row .detail-label {
+			font-weight: 600;
+			color: var(--pink);
+			flex-shrink: 0;
+			font-size: 13px;
+			letter-spacing: 0.5px;
+		}
+		.persona-quote {
+			text-align: center;
+			font-family: var(--font-title);
+			font-size: 16px;
+			font-weight: 700;
+			color: #3D2200;
+			letter-spacing: 0.6px;
+			padding: 14px 16px;
+			background: linear-gradient(135deg, #FFF8E1 0%, #FFF0F5 100%);
+			border-radius: var(--radius-md);
+			margin-top: 2px;
+			line-height: 1.5;
+		}
+		.persona-card-footer {
+			text-align: center;
+			padding: 10px 22px 18px;
+			font-size: 12px;
+			color: var(--text-light);
+			letter-spacing: 0.5px;
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+		}
+		.persona-card-footer .brand-name {
+			font-weight: 700;
+			font-size: 13px;
+			color: #3D2200;
+			letter-spacing: 1px;
+		}
+		.persona-card-footer .tags {
+			font-size: 11px;
+			color: var(--pink);
+			font-weight: 500;
+		}
+
+		/* 按钮组 */
+		.result-buttons {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			width: 100%;
+			max-width: 380px;
+		}
+		.btn-save {
+			width: 100%;
+			padding: 15px 24px;
+			font-size: 16px;
+			font-weight: 700;
+			letter-spacing: 1px;
+			color: #3D2200;
+			background: linear-gradient(135deg, var(--yellow-bright) 0%, var(--yellow) 40%, var(--yellow-deep) 100%);
+			border: none;
+			border-radius: 50px;
+			cursor: pointer;
+			box-shadow: var(--shadow-btn);
+			transition: all var(--transition-fast);
+			font-family: var(--font-title);
+		}
+		.btn-save:active {
+			transform: scale(0.96);
+			box-shadow: 0 3px 14px rgba(255, 200, 40, 0.4);
+		}
+		.btn-retry {
+			width: 100%;
+			padding: 14px 24px;
+			font-size: 15px;
+			font-weight: 600;
+			letter-spacing: 0.8px;
+			color: var(--pink);
+			background: var(--white);
+			border: 2px solid var(--pink-light);
+			border-radius: 50px;
+			cursor: pointer;
+			transition: all var(--transition-fast);
+			font-family: var(--font-title);
+		}
+		.btn-retry:active {
+			background: #FFF5F8;
+			border-color: var(--pink);
+			transform: scale(0.97);
+		}
+
+		/* 保存弹窗 */
+		#save-modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.65);
+			z-index: 1000;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			animation: fadeIn 0.3s ease;
+		}
+		#save-modal.hidden {
+			display: none;
+		}
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+		.save-modal-content {
+			background: var(--white);
+			border-radius: var(--radius-lg);
+			padding: 24px 18px 20px;
+			max-width: 400px;
+			width: 100%;
+			text-align: center;
+			box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+		}
+		.save-modal-content img {
+			width: 100%;
+			border-radius: var(--radius-md);
+			box-shadow: var(--shadow-soft);
+			margin-bottom: 12px;
+		}
+		.save-modal-content .save-tip {
+			font-size: 13px;
+			color: var(--text-mid);
+			margin-bottom: 14px;
+			letter-spacing: 0.3px;
+		}
+		.btn-close-modal {
+			padding: 11px 30px;
+			font-size: 14px;
+			font-weight: 600;
+			color: #fff;
+			background: var(--pink);
+			border: none;
+			border-radius: 50px;
+			cursor: pointer;
+			letter-spacing: 0.5px;
+			font-family: var(--font-title);
+			transition: all var(--transition-fast);
+		}
+		.btn-close-modal:active {
+			background: #E55885;
+			transform: scale(0.96);
+		}
+
+		/* Toast */
+		.toast {
+			position: fixed;
+			top: 30px;
+			left: 50%;
+			transform: translateX(-50%);
+			background: #3D2200;
+			color: #fff;
+			padding: 12px 24px;
+			border-radius: 50px;
+			font-size: 14px;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+			z-index: 2000;
+			animation: toastIn 0.4s ease, toastOut 0.35s ease 2.2s forwards;
+			pointer-events: none;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+		}
+		@keyframes toastIn {
+			from {
+				opacity: 0;
+				transform: translateX(-50%) translateY(-20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(-50%) translateY(0);
+			}
+		}
+		@keyframes toastOut {
+			from {
+				opacity: 1;
+				transform: translateX(-50%) translateY(0);
+			}
+			to {
+				opacity: 0;
+				transform: translateX(-50%) translateY(-20px);
+			}
+		}
+
+		/* 响应式 */
+		@media (max-width: 380px) {
+			.slogan-main {
+				font-size: 22px;
+			}
+			.quiz-question-text {
+				font-size: 17px;
+			}
+			.persona-name {
+				font-size: 21px;
+			}
+			.quiz-option {
+				padding: 13px 15px;
+				font-size: 14px;
+			}
+		}
+		@media (min-width: 420px) {
+			#app-container {
+				padding: 28px 20px 48px;
+			}
+			.slogan-main {
+				font-size: 28px;
+			}
+		}
+	</style>
+</head>
+<body>
+
+	<div id="app-container">
+		<!-- ========== 介绍页 ========== -->
+		<div class="page fade-in" id="intro-page">
+			<div class="brand-badge">
+				<span class="dot"></span> 美力莱加速 · 欧莱雅
+			</div>
+			<div class="intro-hero">
+				<div class="intro-icon">💄✨</div>
+				<h1 class="slogan-main">
+					测测你是欧莱雅<br>哪款<span class="highlight">产品人格</span>
+				</h1>
+				<p class="slogan-sub">10道题，找到你的本命美力单品 + 本命运动</p>
+			</div>
+			<div class="intro-card">
+				<div class="intro-card-item">
+					<span class="emoji-bullet">🧴</span> 揭秘你的美力产品人格
+				</div>
+				<div class="intro-card-item">
+					<span class="emoji-bullet">🏃‍♀️</span> 匹配专属本命运动
+				</div>
+				<div class="intro-card-item">
+					<span class="emoji-bullet">💖</span> 生成专属人格卡，一键保存
+				</div>
+			</div>
+			<button class="btn-start" id="btn-start" onclick="startQuiz()">
+				✦ 开始测试 ✦
+			</button>
+			<p class="intro-footer">约2分钟 · 10道趣味选择题</p>
+		</div>
+
+		<!-- ========== 答题页 ========== -->
+		<div class="page hidden" id="quiz-page">
+			<div class="quiz-header">
+				<span class="quiz-progress-text" id="progress-text">第 1 题 / 共 10 题</span>
+				<span style="font-size:18px;">💭</span>
+			</div>
+			<div class="quiz-progress-bar-wrap">
+				<div class="quiz-progress-bar-fill" id="progress-bar" style="width: 0%;"></div>
+			</div>
+			<div class="quiz-question-card" id="question-card">
+				<div class="quiz-question-number" id="question-number">Q1</div>
+				<div class="quiz-question-text" id="question-text"></div>
+				<div class="quiz-options" id="options-container"></div>
+			</div>
+		</div>
+
+		<!-- ========== 结果页 ========== -->
+		<div class="page hidden" id="result-page">
+			<div class="result-heading">🎉 你的<span>美力人格</span>揭晓！</div>
+			<div class="persona-card" id="persona-card">
+				<!-- 动态填充 -->
+			</div>
+			<div class="result-buttons">
+				<button class="btn-save" onclick="savePersonaCard()">📸 保存人格卡到相册</button>
+				<button class="btn-retry" onclick="retryTest()">🔄 重新测试</button>
+			</div>
+			<div style="text-align:center;font-size:12px;color:var(--text-light);letter-spacing:0.4px;margin-top:6px;">
+				#美力莱加速&nbsp;&nbsp;#美力不设限
+			</div>
+			<div style="text-align:center;font-size:11px;color:var(--text-light);letter-spacing:0.3px;">
+				美力莱加速，益起动起来
+			</div>
+		</div>
+	</div>
+
+	<!-- 保存弹窗 -->
+	<div class="hidden" id="save-modal">
+		<div class="save-modal-content">
+			<img id="save-modal-img" src="" alt="人格卡" />
+			<p class="save-tip">👆 长按图片即可保存到相册</p>
+			<button class="btn-close-modal" onclick="closeSaveModal()">完成</button>
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			// ==================== 题目数据 ====================
+			const questions = [{
+				id: 1,
+				text: '周末上午你通常？',
+				options: [
+					{ letter: 'A', text: '去户外运动流汗', value: 'A' },
+					{ letter: 'B', text: '在家做瑜伽/拉伸', value: 'B' },
+					{ letter: 'C', text: '约朋友逛街/早午餐', value: 'C' },
+					{ letter: 'D', text: '睡到自然醒', value: 'D' },
+				]
+			}, {
+				id: 2,
+				text: '运动时你最在意什么？',
+				options: [
+					{ letter: 'A', text: '防晒不能少', value: 'A' },
+					{ letter: 'B', text: '动作要标准', value: 'B' },
+					{ letter: 'C', text: '拍照要好看', value: 'C' },
+					{ letter: 'D', text: '舒服就行', value: 'D' },
+				]
+			}, {
+				id: 3,
+				text: '运动后你一定会做的事？',
+				options: [
+					{ letter: 'A', text: '补涂防晒/喷喷雾', value: 'A' },
+					{ letter: 'B', text: '敷面膜/保湿', value: 'B' },
+					{ letter: 'C', text: '拍九宫格发朋友圈', value: 'C' },
+					{ letter: 'D', text: '吃顿好的奖励自己', value: 'D' },
+				]
+			}, {
+				id: 4,
+				text: '你的日常护肤步骤通常是？',
+				options: [
+					{ letter: 'A', text: '防晒+基础保湿', value: 'A' },
+					{ letter: 'B', text: '精华+面膜+面霜', value: 'B' },
+					{ letter: 'C', text: '看心情，有时精致有时摆烂', value: 'C' },
+					{ letter: 'D', text: '朋友推荐啥就用啥', value: 'D' },
+				]
+			}, {
+				id: 5,
+				text: '看到公益活动，你的第一反应是？',
+				options: [
+					{ letter: 'A', text: '直接捐款，不多说', value: 'A' },
+					{ letter: 'B', text: '转发扩散', value: 'B' },
+					{ letter: 'C', text: '拉上朋友一起', value: 'C' },
+					{ letter: 'D', text: '先了解一下', value: 'D' },
+				]
+			}, {
+				id: 6,
+				text: '你的运动包里一定会带什么？',
+				options: [
+					{ letter: 'A', text: '防晒喷雾', value: 'A' },
+					{ letter: 'B', text: '运动发带/毛巾', value: 'B' },
+					{ letter: 'C', text: '手机（拍照用）', value: 'C' },
+					{ letter: 'D', text: '水壶', value: 'D' },
+				]
+			}, {
+				id: 7,
+				text: '朋友最常用来形容你的词是？',
+				options: [
+					{ letter: 'A', text: '靠谱、细心', value: 'A' },
+					{ letter: 'B', text: '温柔、好相处', value: 'B' },
+					{ letter: 'C', text: '耀眼、有气场', value: 'C' },
+					{ letter: 'D', text: '有趣、开心果', value: 'D' },
+				]
+			}, {
+				id: 8,
+				text: '你的性格更像以下哪一种？',
+				options: [
+					{ letter: 'A', text: '守护者——保护自己和身边的人', value: 'A' },
+					{ letter: 'B', text: '治愈者——安慰别人让人舒服', value: 'B' },
+					{ letter: 'C', text: '发光体——自带光芒吸引目光', value: 'C' },
+					{ letter: 'D', text: '气氛组——让场面不冷场', value: 'D' },
+				]
+			}, {
+				id: 9,
+				text: '你希望自己新的一年更？',
+				options: [
+					{ letter: 'A', text: '周全——照顾好自己', value: 'A' },
+					{ letter: 'B', text: '温柔——对别人更好', value: 'B' },
+					{ letter: 'C', text: '耀眼——被更多人看见', value: 'C' },
+					{ letter: 'D', text: '快乐——少内耗多开心', value: 'D' },
+				]
+			}, {
+				id: 10,
+				text: '以下哪句话最戳你？',
+				options: [
+					{ letter: 'A', text: '爱自己，才能更好地爱别人', value: 'A' },
+					{ letter: 'B', text: '慢慢来，比较快', value: 'B' },
+					{ letter: 'C', text: '你不必完美，但可以发光', value: 'C' },
+					{ letter: 'D', text: '开心最重要啦', value: 'D' },
+				]
+			}];
+
+			// ==================== 结果数据 ====================
+			const personaData = {
+				'A': {
+					name: '防晒喷雾人格',
+					emoji: '☀️🧴',
+					desc: '你是朋友圈的防晒大使，习惯先保护自己再拥抱世界。',
+					sport: '户外运动（跳绳/飞盘/慢跑）',
+					tag: '守护者',
+					quote: '爱自己，才能更好地爱别人',
+				},
+				'B': {
+					name: '保湿面膜人格',
+					emoji: '💧🧖‍♀️',
+					desc: '你是朋友圈的治愈担当，温柔对待每个人。',
+					sport: '瑜伽/拉伸',
+					tag: '疗愈者',
+					quote: '累了就敷一片面膜，你值得被温柔对待',
+				},
+				'C': {
+					name: '发光水人格',
+					emoji: '✨💡',
+					desc: '你是朋友圈的小太阳，走到哪里都发光。',
+					sport: '舞蹈/有氧',
+					tag: '发光体',
+					quote: '你不必完美，但一定要发光',
+				},
+				'D': {
+					name: '小钢笔口红人格',
+					emoji: '💄🎯',
+					desc: '你是朋友圈的主角，涂上口红就能上场。',
+					sport: '任何运动',
+					tag: '气氛组',
+					quote: '你是自己的女主角',
+				},
+				'AB': {
+					name: '小黑瓶人格',
+					emoji: '⚫✨',
+					desc: '你是朋友圈的自律天花板，先把自己变强。',
+					sport: '平板支撑',
+					tag: '内核派',
+					quote: '你的底子很好，记得偶尔放松',
+				},
+				'AC': {
+					name: '红胖子气垫人格',
+					emoji: '🔴💨',
+					desc: '你是朋友圈的万能选手，随时上场。',
+					sport: '呼啦圈/投壶',
+					tag: '灵活派',
+					quote: '你不挑场合，场合都挑你',
+				},
+				'AD': {
+					name: '大金瓶洗发水人格',
+					emoji: '🌟🧴',
+					desc: '你是朋友圈的元气担当，清爽利落。',
+					sport: '跳绳',
+					tag: '元气派',
+					quote: '你甩头发的样子最好看',
+				},
+				'BC': {
+					name: '紫熨斗眼霜人格',
+					emoji: '💜👁️',
+					desc: '你是朋友圈的细节控，关注被忽略的角落。',
+					sport: '夜跑',
+					tag: '细节党',
+					quote: '你在意别人看不见的地方',
+				},
+				'BD': {
+					name: '玻尿酸喷雾人格',
+					emoji: '💦🌿',
+					desc: '你是朋友圈的及时雨，随性自在。',
+					sport: '散步',
+					tag: '及时雨',
+					quote: '你在的时候刚刚好',
+				},
+				'CD': {
+					name: '卸妆膏人格',
+					emoji: '🧼🌙',
+					desc: '你是朋友圈的断舍离大师，结束才能重新开始。',
+					sport: '拉伸',
+					tag: '清理者',
+					quote: '卸掉今天的妆，才能涂好明天的口红',
+				},
+			};
+
+			// ==================== 状态 ====================
+			let answers = []; // 存储每道题的选项值 'A'|'B'|'C'|'D'
+			let currentQuestionIndex = 0;
+			let isTransitioning = false;
+
+			// ==================== DOM元素 ====================
+			const introPage = document.getElementById('intro-page');
+			const quizPage = document.getElementById('quiz-page');
+			const resultPage = document.getElementById('result-page');
+			const progressText = document.getElementById('progress-text');
+			const progressBar = document.getElementById('progress-bar');
+			const questionCard = document.getElementById('question-card');
+			const questionNumber = document.getElementById('question-number');
+			const questionText = document.getElementById('question-text');
+			const optionsContainer = document.getElementById('options-container');
+			const personaCard = document.getElementById('persona-card');
+			const saveModal = document.getElementById('save-modal');
+			const saveModalImg = document.getElementById('save-modal-img');
+
+			// ==================== 页面切换 ====================
+			function showPage(page) {
+				[introPage, quizPage, resultPage].forEach(p => p.classList.add('hidden'));
+				page.classList.remove('hidden');
+				if (page === quizPage || page === resultPage) {
+					page.classList.add('fade-in');
+					setTimeout(() => page.classList.remove('fade-in'), 600);
+				}
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+
+			// ==================== 开始测试 ====================
+			window.startQuiz = function() {
+				answers = [];
+				currentQuestionIndex = 0;
+				isTransitioning = false;
+				showPage(quizPage);
+				renderQuestion(0);
+			};
+
+			// ==================== 渲染题目 ====================
+			function renderQuestion(index) {
+				if (index >= questions.length) {
+					showResult();
+					return;
+				}
+				currentQuestionIndex = index;
+				const q = questions[index];
+				questionNumber.textContent = 'Q' + q.id;
+				questionText.textContent = q.text;
+				progressText.textContent = '第 ' + (index + 1) + ' 题 / 共 10 题';
+				progressBar.style.width = ((index) / 10 * 100) + '%';
+
+				// 重建选项
+				optionsContainer.innerHTML = '';
+				q.options.forEach((opt, i) => {
+					const btn = document.createElement('button');
+					btn.className = 'quiz-option';
+					btn.innerHTML = '<span class="option-letter">' + opt.letter + '</span>' + opt.text;
+					btn.addEventListener('click', function(e) {
+						if (isTransitioning) return;
+						selectOption(btn, opt.value, index);
+					});
+					// 触摸事件优化
+					btn.addEventListener('touchend', function(e) {
+						if (isTransitioning) return;
+						e.preventDefault();
+						selectOption(btn, opt.value, index);
+					});
+					optionsContainer.appendChild(btn);
+				});
+
+				// 卡片动画
+				questionCard.style.animation = 'none';
+				questionCard.offsetHeight;
+				questionCard.style.animation = 'fadeInUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+			}
+
+			function selectOption(btn, value, index) {
+				if (isTransitioning) return;
+				isTransitioning = true;
+
+				// 高亮选中
+				const allOptions = optionsContainer.querySelectorAll('.quiz-option');
+				allOptions.forEach(o => o.classList.add('fade-out'));
+				btn.classList.remove('fade-out');
+				btn.classList.add('selected');
+
+				// 记录答案
+				answers[index] = value;
+
+				// 更新进度条
+				progressBar.style.width = ((index + 1) / 10 * 100) + '%';
+				progressText.textContent = '第 ' + (index + 1) + ' 题 / 共 10 题';
+
+				// 延迟跳转
+				setTimeout(() => {
+					const nextIndex = index + 1;
+					if (nextIndex < questions.length) {
+						renderQuestion(nextIndex);
+					} else {
+						showResult();
+					}
+					isTransitioning = false;
+				}, 380);
+			}
+
+			// ==================== 结果匹配 ====================
+			function matchPersona() {
+				const counts = { A: 0, B: 0, C: 0, D: 0 };
+				answers.forEach(a => {
+					if (counts[a] !== undefined) counts[a]++;
+				});
+
+				// 找最高票
+				const maxCount = Math.max(counts.A, counts.B, counts.C, counts.D);
+				const topKeys = Object.keys(counts).filter(k => counts[k] === maxCount);
+
+				let resultKey;
+				if (topKeys.length === 1) {
+					resultKey = topKeys[0];
+				} else {
+					// 平局：按优先级A>B>C>D取前两个
+					const sorted = topKeys.sort((a, b) => {
+						const order = { A: 0, B: 1, C: 2, D: 3 };
+						return order[a] - order[b];
+					});
+					const combo = sorted[0] + sorted[1];
+					// 检查是否存在该组合（所有两两组合都有定义）
+					const reverseCombo = sorted[1] + sorted[0];
+					if (personaData[combo]) {
+						resultKey = combo;
+					} else if (personaData[reverseCombo]) {
+						resultKey = reverseCombo;
+					} else {
+						// 兜底：取第一个
+						resultKey = sorted[0];
+					}
+				}
+				return personaData[resultKey] || personaData['A'];
+			}
+
+			// ==================== 显示结果 ====================
+			function showResult() {
+				const persona = matchPersona();
+				showPage(resultPage);
+
+				// 构建人格卡HTML
+				personaCard.innerHTML = `
+					<div class="persona-card-top">
+						<div class="persona-emoji">${persona.emoji}</div>
+						<div class="persona-name">${persona.name}</div>
+					</div>
+					<div class="persona-card-body">
+						<p class="persona-desc">${persona.desc}</p>
+						<div class="persona-detail-row">
+							<span class="detail-icon">🏃‍♀️</span>
+							<span class="detail-label">推荐运动</span>
+							<span>${persona.sport}</span>
+						</div>
+						<div class="persona-detail-row">
+							<span class="detail-icon">💝</span>
+							<span class="detail-label">公益标签</span>
+							<span>${persona.tag}</span>
+						</div>
+						<div class="persona-quote">"${persona.quote}"</div>
+					</div>
+					<div class="persona-card-footer">
+						<span class="brand-name">L'ORÉAL · 美力莱加速</span>
+						<span class="tags">#美力莱加速 #美力不设限</span>
+					</div>
+				`;
+
+				personaCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			}
+
+			// ==================== 保存人格卡 ====================
+			window.savePersonaCard = function() {
+				const card = document.getElementById('persona-card');
+				if (!card) {
+					showToast('请先完成测试哦~');
+					return;
+				}
+
+				// 显示加载提示
+				showToast('正在生成人格卡...');
+
+				// 使用html2canvas
+				if (typeof html2canvas !== 'undefined') {
+					html2canvas(card, {
+						scale: 2,
+						useCORS: true,
+						backgroundColor: '#FFFFFF',
+						logging: false,
+						allowTaint: true,
+					}).then(canvas => {
+						const imgDataUrl = canvas.toDataURL('image/png');
+						showSaveModal(imgDataUrl);
+					}).catch(err => {
+						console.error('html2canvas error:', err);
+						showToast('截图失败，请手动截图保存哦~');
+					});
+				} else {
+					// html2canvas未加载时的备用方案
+					showToast('请长按人格卡手动截图保存~');
+					setTimeout(() => {
+						if (typeof html2canvas === 'undefined') {
+							// 尝试动态加载
+							const script = document.createElement('script');
+							script.src =
+								'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+							script.onload = function() {
+								showToast('加载完成，请再次点击保存~');
+							};
+							script.onerror = function() {
+								showToast('请长按人格卡手动截图保存~');
+							};
+							document.head.appendChild(script);
+						}
+					}, 600);
+				}
+			};
+
+			function showSaveModal(imgDataUrl) {
+				saveModalImg.src = imgDataUrl;
+				saveModal.classList.remove('hidden');
+				document.body.style.overflow = 'hidden';
+				// 也尝试触发下载
+				try {
+					const link = document.createElement('a');
+					link.download = '美力LBTI人格卡.png';
+					link.href = imgDataUrl;
+					link.click();
+				} catch (e) {
+					// 静默处理
+				}
+			}
+
+			window.closeSaveModal = function() {
+				saveModal.classList.add('hidden');
+				document.body.style.overflow = '';
+				saveModalImg.src = '';
+			};
+
+			// 点击弹窗背景关闭
+			saveModal.addEventListener('click', function(e) {
+				if (e.target === saveModal) {
+					closeSaveModal();
+				}
+			});
+
+			// ==================== 重新测试 ====================
+			window.retryTest = function() {
+				answers = [];
+				currentQuestionIndex = 0;
+				isTransitioning = false;
+				progressBar.style.width = '0%';
+				showPage(introPage);
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			};
+
+			// ==================== Toast ====================
+			function showToast(message) {
+				const existing = document.querySelector('.toast');
+				if (existing) existing.remove();
+				const toast = document.createElement('div');
+				toast.className = 'toast';
+				toast.textContent = message;
+				document.body.appendChild(toast);
+				setTimeout(() => {
+					if (toast.parentNode) toast.remove();
+				}, 2600);
+			}
+
+			// ==================== 初始化 ====================
+			function init() {
+				showPage(introPage);
+				progressBar.style.width = '0%';
+				// 预检查html2canvas
+				if (typeof html2canvas === 'undefined') {
+					console.log('html2canvas 将通过CDN加载，首次保存时可能需要等待');
+				}
+			}
+
+			// ==================== 键盘支持（开发调试用） ====================
+			document.addEventListener('keydown', function(e) {
+				if (quizPage.classList.contains('hidden')) return;
+				if (isTransitioning) return;
+				const key = e.key.toUpperCase();
+				if (['A', 'B', 'C', 'D'].includes(key)) {
+					const options = optionsContainer.querySelectorAll('.quiz-option');
+					const index = { A: 0, B: 1, C: 2, D: 3 } [key];
+					if (options[index]) {
+						options[index].click();
+					}
+				}
+			});
+
+			init();
+		})();
+	</script>
+</body>
+</html>
+```
+						
